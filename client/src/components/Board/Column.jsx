@@ -14,7 +14,7 @@ const useStyles = makeStyles((theme) => ({
 const Column = ({ columnId, column, index, setColumns }) => {
   const classes = useStyles();
   return (
-    <Draggable index={index} draggableId={columnId}>
+    <Draggable index={index} draggableId={columnId.toString() + "column"}>
       {(provided) => (
         <Box
           className={classes.columnContainer}
@@ -38,7 +38,10 @@ const Column = ({ columnId, column, index, setColumns }) => {
                           <TaskCard item={item} key={index} index={index} />
                         );
                       })}
-                      <AddCardForm columnId={columnId} setColumns={setColumns}/>
+                      <AddCardForm
+                        columnId={columnId}
+                        setColumns={setColumns}
+                      />
                     </Grid>
                     {provided.placeholder}
                   </CardContent>

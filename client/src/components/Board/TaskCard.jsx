@@ -16,7 +16,7 @@ const useStyles = makeStyles({
 const TaskCard = ({ item, index }) => {
   const classes = useStyles();
   return (
-    <Draggable key={item.id} draggableId={item.id} index={index}>
+    <Draggable key={item.id} draggableId={item?.id?.toString() + "card"} index={index}>
       {(provided, snapshot) => {
         return (
           <Grid

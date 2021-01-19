@@ -7,39 +7,38 @@ import Axios from "axios";
 import { CircularProgress } from "@material-ui/core";
 
 const Home = () => {
-  const itemsFromBackend = [
-    { id: uuid(), content: "First task", index: 4 },
-    { id: uuid(), content: "Second task", index: 3 },
-    { id: uuid(), content: "Third task", index: 2 },
-    { id: uuid(), content: "Fourth task", index: 1 },
-    { id: uuid(), content: "Fifth task", index: 0 },
-  ];
+  // const itemsFromBackend = [
+  //   { id: uuid(), content: "First task", index: 4 },
+  //   { id: uuid(), content: "Second task", index: 3 },
+  //   { id: uuid(), content: "Third task", index: 2 },
+  //   { id: uuid(), content: "Fourth task", index: 1 },
+  //   { id: uuid(), content: "Fifth task", index: 0 },
+  // ];
 
-  const columnsFromBackend = {
-    [uuid()]: {
-      name: "Requested",
-      items: itemsFromBackend,
-    },
-    [uuid()]: {
-      name: "To do",
-      items: [],
-    },
-    [uuid()]: {
-      name: "In Progress",
-      items: [],
-    },
-    [uuid()]: {
-      name: "Done",
-      items: [],
-    },
-  };
+  // const columnsFromBackend = {
+  //   [uuid()]: {
+  //     name: "Requested",
+  //     items: itemsFromBackend,
+  //   },
+  //   [uuid()]: {
+  //     name: "To do",
+  //     items: [],
+  //   },
+  //   [uuid()]: {
+  //     name: "In Progress",
+  //     items: [],
+  //   },
+  //   [uuid()]: {
+  //     name: "Done",
+  //     items: [],
+  //   },
+  // };
   // Object.entries(columnsFromBackend).map(([columnId, column], index) =>
   //   column.items?.sort((a, b) => a.index - b.index)
   // );  // repenser la disposition des colum faire un tableau d'id de column et agire en consequence ...
-  const tabsFromBackend = { id: uuid(), columns: columnsFromBackend };
+  // const tabsFromBackend = { id: uuid(), columns: columnsFromBackend };
   const [columns, setColumns] = useState([]);
   const [reveal, setReveal] = useState(false);
-  console.log("🚀 ~ file: index.jsx ~ line 41 ~ Home ~ reveal", reveal);
   const { boardId } = useParams();
   useEffect(() => {
     Axios.post("http://localhost:3001/api/taskColumn/get", {
@@ -50,14 +49,29 @@ const Home = () => {
           return { ...value, items: [] };
         });
         setColumns(newData);
+        return response;
       })
-      .then(
-        setTimeout(() => {
+      .then((response) => {
+        let promises = [];
+        for (let i = 0; i < response.data.length; i++) {
+          promises.push(
+            Axios.post("http://localhost:3001/api/card/get", {
+              taskColumnId: response.data[i].id,
+            }).then((response) => {
+              setColumns((prevState) => {
+                prevState[i].items = response.data;
+                return [...prevState];
+              });
+            })
+          );
+        }
+        Promise.all(promises).then((result) => {
           setReveal(true);
-        }, 1000)
-      );
+        });
+      });
   }, [boardId]);
-  const handleCardDragEnd = () => {};
+
+  // const handleCardDragEnd = () => {};
   // useEffect(() => {
   //   Object.entries(columns).map(([columnId, column], index) =>
   //     column.items?.sort((a, b) => a.index - b.index)
@@ -69,7 +83,6 @@ const Home = () => {
       <Header />
       {reveal ? (
         <Body
-          columnsFromBackend={columnsFromBackend}
           columns={columns}
           setColumns={setColumns}
         />
