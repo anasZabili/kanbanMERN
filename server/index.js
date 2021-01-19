@@ -117,6 +117,15 @@ app.post("/api/boards/insert", (req, res) => {
   });
 });
 
+app.post("/api/boards/delete", (req, res) => {
+  const id = req.body.id;
+ 
+  const sqlDelete = "DELETE FROM BOARDS WHERE id = ?;";
+  db.query(sqlDelete, [id], (err, result) => {
+    res.send();
+  });
+});
+
 app.listen(port, () => {
   console.log("run on port", port);
 });
