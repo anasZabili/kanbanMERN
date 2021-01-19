@@ -37,7 +37,7 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-app.post("/api/user/post", (req, res) => {
+app.post("/api/user/get", (req, res) => {
   const mail = req.body.mail;
   const password = req.body.password;  
   sqlSelect = "SELECT ID, NAME FROM USER WHERE MAIL like ? and password like ?;";
@@ -102,9 +102,21 @@ app.post("/api/user/insert", (req, res) => {
   const password = req.body.username;
   const sqlInsert = "INSERT INTO USER (name, mail, password) VALUES (?, ?, ?);";
   db.query(sqlInsert, [username, mail, password], (err, result) => {
+    res.send(result.status);
     console.log("🚀 ~ file: index.js ~ line 43 ~ db.query ~ result", result);
   });
 });
+
+app.post("/api/boards/insert", (req, res) => {
+  const name = req.body.name;
+  const ownerId = req.body.ownerId;
+ 
+  const sqlInsert = "INSERT INTO BOARDS (name, ownerId) VALUES (?, ?);";
+  db.query(sqlInsert, [name, ownerId], (err, result) => {
+    res.send(result.status);
+  });
+});
+
 app.listen(port, () => {
   console.log("run on port", port);
 });

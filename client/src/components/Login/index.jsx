@@ -12,7 +12,7 @@ const Login = () => {
   let twoHourExpiration = new Date(new Date().getTime() + 120 * 60 * 1000);
 
   const handleOnClickConnection = async (login, password) => {
-    Axios.post("http://localhost:3001/api/user/post", {
+    Axios.post("http://localhost:3001/api/user/get", {
       mail: login,
       password: password,
     }).then((response, err) => {
@@ -20,6 +20,8 @@ const Login = () => {
         console.log(err);
         return;
       } else {
+        // alert("Nom de compte ou mot de passe incorrect")
+
         console.log(response.data);
         if (response?.data[0]?.ID) {
           Cookies.set("user", response?.data[0]?.ID + "_" + response?.data[0]?.NAME, {
@@ -52,6 +54,11 @@ const Login = () => {
   const handleOnClickCreation = async (login, password1, password2, name) => {
     if (password1 !== password2) {
       alert("Mot de passe pas identique");
+      return;
+    }
+    if (!login|| !password1 || !password2 || !name) {
+      alert("Veuillez renseigner toute les informations");
+      return;
     }
     // useInsertUser(username, login, password1);
     // if le login et la mot de passe son dans la base alors je fait ça:
@@ -60,27 +67,29 @@ const Login = () => {
       username: name,
       mail: login,
       password: password1,
-    }).then(() => {
-      alert("succesful insert");
+    }).then((result, err) => {
+      if (err) {
+        alert("erreur de créattion");
+      }
     });
-    /*
-    Axios.post("/api/user/login", {
-      email: login,
-      name: name,
-      password1: password1,
-      password2: password2,
-    }).then((result) => {
+    
+    // Axios.post("/api/user/login", {
+    //   email: login,
+    //   name: name,
+    //   password1: password1,
+    //   password2: password2,
+    // }).then((result) => {
 
       // a changer par la conditions d'erreur
-      if (true) {
-        Cookies.set("user", "loginTrue", {
-          expires: twoHourExpiration,
-        });
-        auth.setAuth(true);
-      }
-      alert("successfully insert");
+     
+    Cookies.set("user", "loginTrue", {
+      expires: twoHourExpiration,
     });
-    */
+    auth.setAuth(true);
+      
+    //   alert("successfully insert");
+    // });
+  
   };
 
   return (

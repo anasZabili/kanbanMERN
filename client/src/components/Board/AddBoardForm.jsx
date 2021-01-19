@@ -8,6 +8,8 @@ import {
 } from "@material-ui/core";
 import { Delete } from "@material-ui/icons";
 import { v4 as uuid } from "uuid";
+import Axios from 'axios'
+import Cookies from 'js-cookie'
 
 const AddBoardForm = ({ setBoards, boards }) => {
   const [newBoard, setNewBoard] = useState("");
@@ -21,18 +23,32 @@ const AddBoardForm = ({ setBoards, boards }) => {
   };
   const handleOnChange = (e) => {
     setNewBoard(e.target.value);
-  }
+  };
+  const userInfo = Cookies.get("user").split("_");
+  const ownerId = userInfo[0];
   const handleOnClick = () => {
     if (!newBoard) return;
-    setBoards((prevState) => {
-      return [
-        ...prevState,
-        {
-          id: [uuid()],
-          title: newBoard,
-        },
-      ];
+    Axios.post("http://localhost:3001/api/boards/insert", {
+      name: newBoard,
+      ownerId: ownerId,
+    }).then((response, err) => {
+      console.log("🚀 ~ file: AddBoardForm.jsx ~ line 36 ~ handleOnClick ~ response", response)
+      if (err) {
+        console.log(err);
+        return;
+      } else {
+        setBoards((prevState) => {
+          return [
+            ...prevState,
+            {
+              id: [uuid()],
+              name: newBoard,
+            },
+          ];
+        });
+      }
     });
+
     setNewBoard("");
     handleDelete();
   };
