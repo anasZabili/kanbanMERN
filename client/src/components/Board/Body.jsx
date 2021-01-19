@@ -166,7 +166,7 @@ function Body({ columns, setColumns }) {
             })}
             {provided.placeholder}
             <Box className={classes.box2} component="div">
-              <AddColumnForm setColumns={setColumns}/>
+              <AddColumnForm columns={columns} setColumns={setColumns}/>
             </Box>
           </Box>
         )}

@@ -9,6 +9,8 @@ import {
 import { Delete } from "@material-ui/icons";
 import { makeStyles } from "@material-ui/styles";
 import { v4 as uuid } from "uuid";
+import Axios from "axios";
+import { useParams } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
   textfield: {
@@ -22,26 +24,41 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddColumnForm = ({ setColumns }) => {
+const AddColumnForm = ({ setColumns, columns }) => {
   const classes = useStyles();
   const [revealForm, setRevealForm] = useState(false);
   const [newColumn, setNewColumn] = useState("");
+  const { boardId } = useParams();
   const handleChange = (e) => {
     setNewColumn(e.target.value);
   };
   const handleOnClick = () => {
     if (!newColumn) return;
-    setColumns((prevState) => {
-      return {
-        ...prevState,
-        [uuid()]: {
-          name: newColumn,
-          items: [],
-        },
-      };
+    let maxPosition = 0;
+    for (let index = 0; index < columns.length; index++) {
+      maxPosition =
+        columns.position > maxPosition ? columns.position : maxPosition;
+    }
+    Axios.post("http://localhost:3001/api/taskColumn/insert", {
+      boardId: boardId,
+      name: newColumn,
+      position: maxPosition,
+    }).then((response, err) => {
+      console.log("🚀 ~ file: AddColumnForm.jsx ~ line 48 ~ handleOnClick ~ response", response)
+      setColumns((prevState) => {
+        return {
+          ...prevState,
+          [uuid()]: {
+            name: newColumn,
+            items: [],
+            boardId: boardId,
+            position: maxPosition
+          },
+        };
+      });
+      setNewColumn("");
+      setRevealForm(false);
     });
-    setNewColumn("");
-    setRevealForm(false);
   };
   const handleReveal = () => {
     setRevealForm(true);

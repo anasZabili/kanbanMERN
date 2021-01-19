@@ -40,7 +40,7 @@ app.use(express.json());
 app.post("/api/user/get", (req, res) => {
   const mail = req.body.mail;
   const password = req.body.password;  
-  sqlSelect = "SELECT ID, NAME FROM USER WHERE MAIL like ? and password like ?;";
+  sqlSelect = "SELECT ID, NAME FROM USER WHERE MAIL LIKE ? AND password LIKE ?;";
   db.query(sqlSelect, [mail, password] ,(err, result) => {
     if (err) {
       return res.send(err);
@@ -55,7 +55,7 @@ app.post("/api/user/get", (req, res) => {
 
 app.post("/api/boards/get", (req, res) => {
   const ownerId = req.body.ownerId;
-  sqlSelect = "SELECT DISTINCT * FROM BOARDS where ownerId = ? OR ID IN (SELECT BOARDID FROM INVITED WHERE ID = ?);";
+  sqlSelect = "SELECT DISTINCT * FROM BOARDS WHERE OWNERID = ? OR ID IN (SELECT BOARDID FROM INVITED WHERE ID = ?);";
   db.query(sqlSelect, [ownerId, ownerId] ,(err, result) => {
     if (err) {
       return res.send(err);
@@ -69,7 +69,7 @@ app.post("/api/boards/get", (req, res) => {
 
 app.post("/api/taskColumn/get", (req, res) => {
   const boardId = req.body.boardId;
-  sqlSelect = "SELECT * FROM TASKCOLUMN where boardId = ?;";
+  sqlSelect = "SELECT * FROM TASKCOLUMN WHERE BOARDID = ?;";
   db.query(sqlSelect, [boardId] ,(err, result) => {
     if (err) {
       return res.send(err);
@@ -80,6 +80,30 @@ app.post("/api/taskColumn/get", (req, res) => {
     }
   });
 });
+
+app.post("/api/taskColumn/insert", (req, res) => {
+  const boardId = req.body.boardId;
+  const name = req.body.name;
+  const position = req.body.position;
+  sqlSelect = "INSERT INTO taskColumn (BOARDID, NAME, POSITION) VALUES (?, ?, ?);";
+  db.query(sqlSelect, [boardId, name, position] ,(err, result) => {
+    res.send()
+  });
+});
+
+// app.post("/api/taskColumn/delete", (req, res) => {
+//   const boardId = req.body.boardId;
+//   sqlSelect = "SELECT * FROM TASKCOLUMN where boardId = ?;";
+//   db.query(sqlSelect, [boardId] ,(err, result) => {
+//     if (err) {
+//       return res.send(err);
+//     } else if (!result) {
+//       return null;
+//     } else {
+//       return res.send(result);
+//     }
+//   });
+// });
 
 app.post("/api/card/get", (req, res) => {
   const taskColumnId = req.body.taskColumnId;
