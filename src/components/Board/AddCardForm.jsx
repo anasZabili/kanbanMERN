@@ -38,7 +38,6 @@ const AddCardForm = ({ columnId, setColumns }) => {
   };
 
   const submitCard = () => {
-    console.log(newCard);
     if (!newCard) return;
     // Axios.post("/api/insert", {
     //   cardName: newCard,

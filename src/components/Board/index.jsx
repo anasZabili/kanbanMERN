@@ -1,7 +1,10 @@
 import Body from "./Body";
 import Header from "./Header";
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
+import { useParams } from "react-router-dom";
+import Axios from "axios";
+import { CircularProgress } from "@material-ui/core";
 
 const Home = () => {
   const itemsFromBackend = [
@@ -11,7 +14,7 @@ const Home = () => {
     { id: uuid(), content: "Fourth task", index: 1 },
     { id: uuid(), content: "Fifth task", index: 0 },
   ];
-  
+
   const columnsFromBackend = {
     [uuid()]: {
       name: "Requested",
@@ -34,11 +37,27 @@ const Home = () => {
   //   column.items?.sort((a, b) => a.index - b.index)
   // );  // repenser la disposition des colum faire un tableau d'id de column et agire en consequence ...
   const tabsFromBackend = { id: uuid(), columns: columnsFromBackend };
-  const [columns, setColumns] = useState(columnsFromBackend);
-  console.log("🚀 ~ file: index.jsx ~ line 38 ~ Home ~ columns", columns)
-  const handleCardDragEnd = () => {
-    
-  }
+  const [columns, setColumns] = useState([]);
+  const [reveal, setReveal] = useState(false);
+  console.log("🚀 ~ file: index.jsx ~ line 41 ~ Home ~ reveal", reveal);
+  const { boardId } = useParams();
+  useEffect(() => {
+    Axios.post("http://localhost:3001/api/taskColumn/get", {
+      boardId: boardId,
+    })
+      .then((response, err) => {
+        const newData = response.data.map((value) => {
+          return { ...value, items: [] };
+        });
+        setColumns(newData);
+      })
+      .then(
+        setTimeout(() => {
+          setReveal(true);
+        }, 1000)
+      );
+  }, [boardId]);
+  const handleCardDragEnd = () => {};
   // useEffect(() => {
   //   Object.entries(columns).map(([columnId, column], index) =>
   //     column.items?.sort((a, b) => a.index - b.index)
@@ -48,7 +67,15 @@ const Home = () => {
   return (
     <>
       <Header />
-      <Body columnsFromBackend={columnsFromBackend} columns={columns} setColumns={setColumns}/>
+      {reveal ? (
+        <Body
+          columnsFromBackend={columnsFromBackend}
+          columns={columns}
+          setColumns={setColumns}
+        />
+      ) : (
+        <CircularProgress />
+      )}
     </>
   );
 };

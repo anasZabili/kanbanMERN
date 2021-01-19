@@ -15,7 +15,9 @@ import { makeStyles } from "@material-ui/styles";
 import { useHistory } from "react-router-dom";
 import AddBoardForm from "../Board/AddBoardForm";
 import Header from "./Header";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Axios from "axios";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   appContainer: {
@@ -29,24 +31,35 @@ const useStyles = makeStyles((theme) => ({
 const SelectBoard = () => {
   const history = useHistory();
   const classes = useStyles();
-  const boardDataFromBackEnd = [
-    {
-      id: [uuid()],
-      title: "Super Projet 1",
-    },
-    {
-      id: [uuid()],
-      title: "Super Projet 2",
-    },
-  ];
-  const [boards, setBoards] = useState(boardDataFromBackEnd);
+  // const boardDataFromBackEnd = [
+  //   {
+  //     id: [uuid()],
+  //     title: "Super Projet 1",
+  //   },
+  //   {
+  //     id: [uuid()],
+  //     title: "Super Projet 2",
+  //   },
+  // ];
+  const userInfo = Cookies.get("user").split("_");
+  const ownerId = userInfo[0];
+
+  const [boards, setBoards] = useState([]);
+  useEffect(() => {
+    Axios.post("http://localhost:3001/api/boards/get", {
+      ownerId: ownerId,
+    }).then((response, err) => {
+      setBoards(response.data);
+    })
+
+  }, [ownerId])
+
+  // const [boards, setBoards] = useState(boardDataFromBackEnd);
   const handleDelete = (id) => {
-    const deletedElementIndex = boards.findIndex((value) => (value.id === id));
-    console.log("🚀 ~ file: index.jsx ~ line 45 ~ handleDelete ~ deletedElementIndex", deletedElementIndex)
-    
+    const deletedElementIndex = boards.findIndex((value) => value.id === id);
+
     setBoards((prevState) => {
       prevState.splice(deletedElementIndex, 1);
-      console.log("🚀 ~ file: index.jsx ~ line 47 ~ setBoards ~ prevState", prevState)
       return [...prevState];
     });
     // const NewBoards = {};
@@ -61,12 +74,21 @@ const SelectBoard = () => {
               <Grid item xs={4} key={value.id}>
                 {/* Todo remplacer par le bon truc quand j'aurais le back  (mettre le project name dans le lien*/}
                 <Card className={classes.card}>
-                  <CardActionArea onClick={() => history.push("/Home")}>
-                    <Typography align="center">{value.title}</Typography>
-                  </CardActionArea>
-                  <IconButton onClick={() => handleDelete(value.id)}>
-                    <Delete />
-                  </IconButton>
+                  <Grid container spacing={1}>
+                    <Grid item xs={11}>
+                      <CardActionArea onClick={() => history.push("/Home/" + value.id)}>
+                        <Typography align="center">{value.name}</Typography>
+                      </CardActionArea>
+                    </Grid>
+                    <Grid item xs={1}>
+                      <IconButton
+                        size="small"
+                        onClick={() => handleDelete(value.id)}
+                      >
+                        <Delete />
+                      </IconButton>
+                    </Grid>
+                  </Grid>
                 </Card>
               </Grid>
             );
