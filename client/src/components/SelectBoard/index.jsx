@@ -52,7 +52,7 @@ const SelectBoard = () => {
       setBoards(response.data);
     })
 
-  }, [ownerId])
+  }, [ownerId, boards])
 
   // const [boards, setBoards] = useState(boardDataFromBackEnd);
   const handleDelete = (id) => {

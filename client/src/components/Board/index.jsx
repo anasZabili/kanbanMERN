@@ -69,7 +69,7 @@ const Home = () => {
           setReveal(true);
         });
       });
-  }, [boardId]);
+  }, [boardId, columns]);
 
   // const handleCardDragEnd = () => {};
   // useEffect(() => {

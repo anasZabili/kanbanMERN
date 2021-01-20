@@ -6,8 +6,10 @@ import Cookies from "js-cookie";
 import Axios from "axios";
 import useInsertUser from "../../services/useInsertUser";
 
+
 const Login = () => {
   const [isConnection, setIsConnection] = useState(true);
+  const [loginStatus, setLoginStatus] = useState("");
   const auth = useContext(AuthContext);
   let twoHourExpiration = new Date(new Date().getTime() + 120 * 60 * 1000);
 
@@ -16,22 +18,28 @@ const Login = () => {
       mail: login,
       password: password,
     }).then((response, err) => {
+      console.log(
+        "🚀 ~ file: index.jsx ~ line 21 ~ handleOnClickConnection ~ response",
+        response
+      );
       if (err) {
         console.log(err);
         return;
-      } else {
-        // alert("Nom de compte ou mot de passe incorrect")
-
-        console.log(response.data);
-        if (response?.data[0]?.ID) {
-          Cookies.set("user", response?.data[0]?.ID + "_" + response?.data[0]?.NAME, {
-            expires: twoHourExpiration,
-          });
-          auth.setAuth(true);
-        } else {
-          alert("Nom de compte ou mot de passe incorrect")
-        }
       }
+      // alert("Nom de compte ou mot de passe incorrect")
+      if (response.data.message) {
+        alert(response.data.message);
+      } else {
+        Cookies.set(
+          "user",
+          response?.data[0]?.ID + "_" + response?.data[0]?.NAME,
+          {
+            expires: twoHourExpiration,
+          }
+        );
+        auth.setAuth(true);
+      }
+
       // setColumn(response.data)
     });
     // if le login et la mot de passe son dans la base alors je fait ça:
@@ -56,7 +64,7 @@ const Login = () => {
       alert("Mot de passe pas identique");
       return;
     }
-    if (!login|| !password1 || !password2 || !name) {
+    if (!login || !password1 || !password2 || !name) {
       alert("Veuillez renseigner toute les informations");
       return;
     }
@@ -72,7 +80,7 @@ const Login = () => {
         alert("erreur de créattion");
       }
     });
-    
+
     // Axios.post("/api/user/login", {
     //   email: login,
     //   name: name,
@@ -80,16 +88,15 @@ const Login = () => {
     //   password2: password2,
     // }).then((result) => {
 
-      // a changer par la conditions d'erreur
-     
+    // a changer par la conditions d'erreur
+
     Cookies.set("user", "loginTrue", {
       expires: twoHourExpiration,
     });
     auth.setAuth(true);
-      
+
     //   alert("successfully insert");
     // });
-  
   };
 
   return (
