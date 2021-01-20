@@ -11,7 +11,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Column = ({ columnId, column, index, setColumns }) => {
+const Column = ({ columnId, column, index, setColumns, cardChange, setCardChange }) => {
   const classes = useStyles();
   return (
     <Draggable index={index} draggableId={columnId.toString() + "column"}>
@@ -25,7 +25,7 @@ const Column = ({ columnId, column, index, setColumns }) => {
         >
           <Card>
             <CardHeader title={column.name} />
-            <Droppable droppableId={columnId} key={columnId} type="Card">
+            <Droppable droppableId={columnId.toString() + "column"} key={columnId} type="Card">
               {(provided, snapshot) => {
                 return (
                   <CardContent
@@ -39,6 +39,9 @@ const Column = ({ columnId, column, index, setColumns }) => {
                         );
                       })}
                       <AddCardForm
+                        cardChange={cardChange} 
+                        setCardChange={setCardChange}
+                        column={column}
                         columnId={columnId}
                         setColumns={setColumns}
                       />

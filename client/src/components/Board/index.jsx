@@ -38,7 +38,10 @@ const Home = () => {
   // );  // repenser la disposition des colum faire un tableau d'id de column et agire en consequence ...
   // const tabsFromBackend = { id: uuid(), columns: columnsFromBackend };
   const [columns, setColumns] = useState([]);
+  console.log("🚀 ~ file: index.jsx ~ line 41 ~ Home ~ columns", columns);
   const [reveal, setReveal] = useState(false);
+  const [cardChange, setCardChange] = useState(0);
+  console.log("🚀 ~ file: index.jsx ~ line 44 ~ Home ~ cardChange", cardChange)
   const { boardId } = useParams();
   useEffect(() => {
     Axios.post("http://localhost:3001/api/taskColumn/get", {
@@ -69,7 +72,7 @@ const Home = () => {
           setReveal(true);
         });
       });
-  }, [boardId, columns]);
+  }, [boardId, cardChange]);
 
   // const handleCardDragEnd = () => {};
   // useEffect(() => {
@@ -83,6 +86,8 @@ const Home = () => {
       <Header />
       {reveal ? (
         <Body
+          cardChange={cardChange}
+          setCardChange={setCardChange}
           columns={columns}
           setColumns={setColumns}
         />

@@ -37,24 +37,26 @@ const AddColumnForm = ({ setColumns, columns }) => {
     let maxPosition = 0;
     for (let index = 0; index < columns.length; index++) {
       maxPosition =
-        columns.position > maxPosition ? columns.position : maxPosition;
+      columns[index].position > maxPosition ? columns[index].position : maxPosition;
     }
+    console.log("🚀 ~ file: AddColumnForm.jsx ~ line 40 ~ handleOnClick ~ maxPosition", maxPosition)
     Axios.post("http://localhost:3001/api/taskColumn/insert", {
       boardId: boardId,
       name: newColumn,
-      position: maxPosition,
+      position: maxPosition === 0 ? 0 : maxPosition + 1,
     }).then((response, err) => {
       console.log("🚀 ~ file: AddColumnForm.jsx ~ line 48 ~ handleOnClick ~ response", response)
       setColumns((prevState) => {
-        return {
+        return [
           ...prevState,
-          [uuid()]: {
+          {
+            id: [uuid()],
             name: newColumn,
             items: [],
             boardId: boardId,
-            position: maxPosition
+            position: maxPosition === 0 ? 0 : maxPosition + 1 
           },
-        };
+        ];
       });
       setNewColumn("");
       setRevealForm(false);

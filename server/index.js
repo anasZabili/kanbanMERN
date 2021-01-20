@@ -148,13 +148,37 @@ app.post("/api/card/get", (req, res) => {
   const taskColumnId = req.body.taskColumnId;
 
   sqlSelect =
-    "SELECT DISTINCT c.id, u.name, c.content, c.position FROM CARD AS c, USER as u WHERE c.personInChargeId = u.id AND taskColumnId = ?;";
+    "SELECT DISTINCT c.id, u.name, c.content, c.position, c.personInChargeId FROM CARD AS c, USER as u WHERE c.personInChargeId = u.id AND taskColumnId = ?;";
   db.query(sqlSelect, [taskColumnId], (err, result) => {
     if (err) {
       return res.send(err);
     } else if (!result) {
       return null;
     } else {
+      return res.send(result);
+    }
+  });
+});
+
+app.post("/api/card/insert", (req, res) => {
+  const taskColumnId = req.body.taskColumnId;
+  const personInChargeId = req.body.personInChargeId;
+  const content = req.body.content;
+  const position = req.body.position;
+  sqlSelect =
+  "INSERT INTO CARD (TASKCOLUMNID, PERSONINCHARGEID, CONTENT, POSITION) VALUES (?, ?, ?, ?);"
+  db.query(sqlSelect, [taskColumnId, personInChargeId, content, position], (err, result) => {
+    console.log("🚀 ~ file: index.js ~ line 171 ~ db.query ~ position", position)
+    console.log("🚀 ~ file: index.js ~ line 171 ~ db.query ~ content", content)
+    console.log("🚀 ~ file: index.js ~ line 171 ~ db.query ~ personInChargeId", personInChargeId)
+    console.log("🚀 ~ file: index.js ~ line 171 ~ db.query ~ taskColumnId", taskColumnId)
+    if (err) {
+      console.log("🚀 ~ file: index.js ~ line 176 ~ db.query ~ err", err)
+      return res.send(err);
+    } else if (!result) {
+      return null;
+    } else {
+      console.log("🚀 ~ file: index.js ~ line 181 ~ db.query ~ result", result)
       return res.send(result);
     }
   });

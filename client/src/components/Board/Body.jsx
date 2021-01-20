@@ -139,7 +139,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Body({ columns, setColumns }) {
+function Body({ columns, setColumns, cardChange, setCardChange }) {
   const classes = useStyles();
   return (
     <DragDropContext
@@ -153,13 +153,16 @@ function Body({ columns, setColumns }) {
             {...provided.droppableProps}
             ref={provided.innerRef}
           >
-            {Object.entries(columns).map(([columnId, column], index) => {
+            {columns.map((column, index) => {
+              console.log("🚀 ~ file: Body.jsx ~ line 157 ~ {columns.map ~ column", column)
               return (
                 <Column
+                  cardChange={cardChange}
+                  setCardChange={setCardChange}
                   column={column}
-                  columnId={columnId}
+                  columnId={column.id}
                   index={index}
-                  key={columnId}
+                  key={column.id}
                   setColumns={setColumns}
                 />
               );

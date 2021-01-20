@@ -10,6 +10,7 @@ import { makeStyles } from "@material-ui/styles";
 import { Delete } from "@material-ui/icons";
 import Axios from "axios";
 import { v4 as uuid } from "uuid";
+import Cookies from "js-cookie";
 
 const useStyles = makeStyles((theme) => ({
   textfield: {
@@ -23,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddCardForm = ({ columnId, setColumns }) => {
+const AddCardForm = ({ columnId, setColumns, column, cardChange, setCardChange }) => {
   const classes = useStyles();
   const [newCard, setNewCard] = useState("");
   const [revealForm, setRevealForm] = useState(false);
@@ -36,26 +37,73 @@ const AddCardForm = ({ columnId, setColumns }) => {
   const handleDelete = () => {
     setRevealForm(false);
   };
+  const userInfo = Cookies.get("user").split("_");
+  const ownerId = userInfo[0];
 
-  const submitCard = () => {
+  const handleOnClick = () => {
     if (!newCard) return;
     // Axios.post("/api/insert", {
     //   cardName: newCard,
     // }).then(() => {
     //   alert("successfully insert");
     // });
-    setColumns((prevState) => {
-      let maxIndex = 0;
-      const index = prevState[columnId].items.map((value, index) =>
-        value.index > maxIndex ? maxIndex = value.index : maxIndex
+    let maxPosition = 0;
+    for (let index = 0; index < column.items.length; index++) {
+      maxPosition =
+        column.items[index].position > maxPosition
+          ? column.items[index].position
+          : maxPosition;
+    }
+    Axios.post("http://localhost:3001/api/card/insert", {
+      taskColumnId: columnId,
+      personInChargeId: ownerId,
+      content: newCard,
+      position: maxPosition === 0 ? 0 : maxPosition + 1,
+    }).then((response, err) => {
+      console.log(
+        "🚀 ~ file: AddBoardForm.jsx ~ line 36 ~ handleOnClick ~ response",
+        response
       );
-      prevState[columnId].items.push({
-        id: uuid(),
-        content: newCard,
-        index: maxIndex + 1,
-      });
-      return { ...prevState };
+      if (err) {
+        console.log(err);
+        return;
+      } else {
+        // DOUBLE douille a voir
+        // setColumns((prevState) => {
+        //   console.log(
+        //     "🚀 ~ file: AddCardForm.jsx ~ line 72 ~ setColumns ~ prevState",
+        //     prevState
+        //   );
+        //   const indexOfColumn = prevState.findIndex(
+        //     (value) => column.id === value.id
+        //   );
+        //   prevState[indexOfColumn].items = [
+        //     ...prevState[indexOfColumn].items,
+        //     {
+        //       id: [uuid()],
+        //       content: newCard,
+        //       position: maxPosition === 0 ? 0 : maxPosition + 1,
+        //       personInChargeId: ownerId,
+        //     },
+        //   ];
+        //   console.log("je set le new state avec la valeur :", prevState);
+        //   return [...prevState];
+        // });
+        setCardChange((prevState) => prevState + 1)
+      }
     });
+    // setColumns((prevState) => {
+    //   let maxIndex = 0;
+    //   const index = prevState[columnId].items.map((value, index) =>
+    //     value.index > maxIndex ? maxIndex = value.index : maxIndex
+    //   );
+    //   prevState[columnId].items.push({
+    //     id: uuid(),
+    //     content: newCard,
+    //     index: maxIndex + 1,
+    //   });
+    //   return { ...prevState };
+    // });
     setRevealForm(false);
     setNewCard("");
   };
@@ -79,7 +127,7 @@ const AddCardForm = ({ columnId, setColumns }) => {
             variant="outlined"
           />
           <Button
-            onClick={submitCard}
+            onClick={handleOnClick}
             size="small"
             variant="contained"
             color="primary"
