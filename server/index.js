@@ -194,6 +194,23 @@ app.post("/api/card/delete", (req, res) => {
   });
 });
 
+app.post("/api/card/update", (req, res) => {
+  const cardId = req.body.cardId;
+  const taskColumnId = req.body.taskColumnId;
+  const position = req.body.position
+  const sqlSelect =
+  "UPDATE CARD SET taskColumnId = ?, position = ?  WHERE id = ?;";
+  db.query(sqlSelect, [taskColumnId, position, cardId], (err, result) => {
+    if (err) {
+      return res.send(err);
+    } else if (!result) {
+      return null;
+    } else {
+      return res.send(result);
+    }
+  });
+});
+
 
 
 app.post("/api/boards/insert", (req, res) => {

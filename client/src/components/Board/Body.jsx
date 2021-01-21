@@ -5,6 +5,8 @@ import { Box } from "@material-ui/core";
 import Column from "./Column";
 import AddColumnForm from "./AddColumnForm";
 import { Room } from "@material-ui/icons";
+import { v4 as uuid } from "uuid";
+import Axios from "axios";
 
 // const onDragEnd = (result, columns, setColumns) => {
 //   if (!result.destination) return;
@@ -69,53 +71,85 @@ import { Room } from "@material-ui/icons";
 //   }
 // };
 const onDragEnd = (result, columns, setColumns) => {
-console.log("🚀 ~ file: Body.jsx ~ line 72 ~ onDragEnd ~ columns", columns)
+  console.log("🚀 ~ file: Body.jsx ~ line 72 ~ onDragEnd ~ columns", columns);
   if (!result.destination) return;
   const { source, destination, type } = result;
-  console.log("🚀 ~ file: Body.jsx ~ line 74 ~ onDragEnd ~ destination", destination)
-  console.log("🚀 ~ file: Body.jsx ~ line 74 ~ onDragEnd ~ source", source)
+  console.log(
+    "🚀 ~ file: Body.jsx ~ line 74 ~ onDragEnd ~ destination",
+    destination
+  );
+  console.log("🚀 ~ file: Body.jsx ~ line 74 ~ onDragEnd ~ source", source);
   if (type === "Card") {
     if (source.droppableId !== destination.droppableId) {
       // console.log("le forçage donne", parseInt(source.droppableId));
-      const sourceIndex = columns.findIndex((value) => value.id === parseInt(source.droppableId))
-      const destIndex = columns.findIndex((value) => value.id === parseInt(destination.droppableId))
+      const sourceIndex = columns.findIndex(
+        (value) => value.id === parseInt(source.droppableId)
+      );
+      const destIndex = columns.findIndex(
+        (value) => value.id === parseInt(destination.droppableId)
+      );
       const sourceColumn = columns[sourceIndex];
       const destColumn = columns[destIndex];
       const sourceItems = [...sourceColumn.items];
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
-      setColumns({
-        ...columns,
-        [source.droppableId]: {
+      Axios.post("http://localhost:3001/api/card/update", {
+        taskColumnId: destColumn.id,
+        cardId: removed.id,
+        position: destination.index
+      }).then((response, err) => {
+        console.log("update fait", response);
+      })
+      // Axios.post("http://localhost:3001/api/card/insert", {
+      //   taskColumnId: destColumn.id,
+      //   personInChargeId: removed.personInChargeId,
+      //   content: removed.content,
+      //   // todo bien set la position
+      //   position: 20,
+      // }).then(
+       
+      // );
+      setColumns((prevState) => {
+        prevState[sourceIndex] = {
           ...sourceColumn,
           items: sourceItems,
-        },
-        [destination.droppableId]: {
+        };
+        prevState[destIndex] = {
           ...destColumn,
           items: destItems,
-        },
+        };
+        return [...prevState];
       });
     } else {
-      const column = columns[source.droppableId];
+      const sourceIndex = columns.findIndex(
+        (value) => value.id === parseInt(source.droppableId)
+      );
+      const destIndex = columns.findIndex(
+        (value) => value.id === parseInt(destination.droppableId)
+      );
+      const column = columns[sourceIndex];
       const copiedItems = [...column.items];
       const [removed] = copiedItems.splice(source.index, 1);
+      
       copiedItems.splice(destination.index, 0, removed);
-      setColumns({
-        ...columns,
-        [source.droppableId]: {
-          ...column,
-          items: copiedItems,
-        },
-      });
+      Axios.post("http://localhost:3001/api/card/update", {
+        taskColumnId: column.id,
+        cardId: removed.id,
+        position: destination.index
+      }).then((response, err) => {
+        console.log("update fait", response);
+      })
+      setColumns((prevState) => {
+        prevState[sourceIndex].items = copiedItems
+        return [...prevState];
+      })
     }
   }
   if (type === "Column") {
     if (!result.destination) return;
-
   }
 };
-
 
 const useStyles = makeStyles((theme) => ({
   appContainer: {
@@ -146,7 +180,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Body({ columns, setColumns, cardChange, setCardChange }) {
-  console.log("🚀 ~ file: Body.jsx ~ line 149 ~ Body ~ columns", columns)
+  console.log("🚀 ~ file: Body.jsx ~ line 149 ~ Body ~ columns", columns);
   const classes = useStyles();
   return (
     <DragDropContext
@@ -175,7 +209,7 @@ function Body({ columns, setColumns, cardChange, setCardChange }) {
             })}
             {provided.placeholder}
             <Box className={classes.box2} component="div">
-              <AddColumnForm columns={columns} setColumns={setColumns}/>
+              <AddColumnForm columns={columns} setColumns={setColumns} />
             </Box>
           </Box>
         )}

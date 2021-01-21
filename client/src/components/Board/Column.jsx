@@ -12,6 +12,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Column = ({ columnId, column, index, setColumns, cardChange, setCardChange }) => {
+console.log("🚀 ~ file: Column.jsx ~ line 15 ~ Column ~ column", column)
   const classes = useStyles();
   return (
     <Draggable index={index} draggableId={columnId.toString() + "column"}>
