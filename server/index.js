@@ -69,7 +69,6 @@ app.post("/api/user/insert", (req, res) => {
 app.post("/api/user/get", (req, res) => {
   const mail = req.body.mail;
   const password = req.body.password;
-  console.log("🚀 ~ file: index.js ~ line 63 ~ app.post ~ password", password)
   const sqlSelect =
     "SELECT ID, NAME, PASSWORD FROM USER WHERE MAIL LIKE ? ;";
   db.query(sqlSelect, mail, (err, result) => {
@@ -168,12 +167,7 @@ app.post("/api/card/insert", (req, res) => {
   const sqlSelect =
   "INSERT INTO CARD (TASKCOLUMNID, PERSONINCHARGEID, CONTENT, POSITION) VALUES (?, ?, ?, ?);"
   db.query(sqlSelect, [taskColumnId, personInChargeId, content, position], (err, result) => {
-    console.log("🚀 ~ file: index.js ~ line 171 ~ db.query ~ position", position)
-    console.log("🚀 ~ file: index.js ~ line 171 ~ db.query ~ content", content)
-    console.log("🚀 ~ file: index.js ~ line 171 ~ db.query ~ personInChargeId", personInChargeId)
-    console.log("🚀 ~ file: index.js ~ line 171 ~ db.query ~ taskColumnId", taskColumnId)
     if (err) {
-      console.log("🚀 ~ file: index.js ~ line 176 ~ db.query ~ err", err)
       return res.send(err);
     } else if (!result) {
       return null;
@@ -191,12 +185,10 @@ app.post("/api/card/delete", (req, res) => {
   "DELETE FROM CARD WHERE ID = ?;"
   db.query(sqlSelect, [cardId], (err, result) => {
     if (err) {
-      console.log("🚀 ~ file: index.js ~ line 176 ~ db.query ~ err", err)
       return res.send(err);
     } else if (!result) {
       return null;
     } else {
-      console.log("🚀 ~ file: index.js ~ line 181 ~ db.query ~ result", result)
       return res.send(result);
     }
   });

@@ -18,10 +18,6 @@ const Login = () => {
       mail: login,
       password: password,
     }).then((response, err) => {
-      console.log(
-        "🚀 ~ file: index.jsx ~ line 21 ~ handleOnClickConnection ~ response",
-        response
-      );
       if (err) {
         console.log(err);
         return;

@@ -69,12 +69,18 @@ import { Room } from "@material-ui/icons";
 //   }
 // };
 const onDragEnd = (result, columns, setColumns) => {
+console.log("🚀 ~ file: Body.jsx ~ line 72 ~ onDragEnd ~ columns", columns)
   if (!result.destination) return;
   const { source, destination, type } = result;
+  console.log("🚀 ~ file: Body.jsx ~ line 74 ~ onDragEnd ~ destination", destination)
+  console.log("🚀 ~ file: Body.jsx ~ line 74 ~ onDragEnd ~ source", source)
   if (type === "Card") {
     if (source.droppableId !== destination.droppableId) {
-      const sourceColumn = columns[source.droppableId];
-      const destColumn = columns[destination.droppableId];
+      // console.log("le forçage donne", parseInt(source.droppableId));
+      const sourceIndex = columns.findIndex((value) => value.id === parseInt(source.droppableId))
+      const destIndex = columns.findIndex((value) => value.id === parseInt(destination.droppableId))
+      const sourceColumn = columns[sourceIndex];
+      const destColumn = columns[destIndex];
       const sourceItems = [...sourceColumn.items];
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
@@ -140,6 +146,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Body({ columns, setColumns, cardChange, setCardChange }) {
+  console.log("🚀 ~ file: Body.jsx ~ line 149 ~ Body ~ columns", columns)
   const classes = useStyles();
   return (
     <DragDropContext
@@ -154,7 +161,6 @@ function Body({ columns, setColumns, cardChange, setCardChange }) {
             ref={provided.innerRef}
           >
             {columns.map((column, index) => {
-              console.log("🚀 ~ file: Body.jsx ~ line 157 ~ {columns.map ~ column", column)
               return (
                 <Column
                   cardChange={cardChange}

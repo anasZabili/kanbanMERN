@@ -32,7 +32,6 @@ const AddBoardForm = ({ setBoards, boards, setChange }) => {
       name: newBoard,
       ownerId: ownerId,
     }).then((response, err) => {
-      console.log("🚀 ~ file: AddBoardForm.jsx ~ line 36 ~ handleOnClick ~ response", response)
       if (err) {
         console.log(err);
         return;

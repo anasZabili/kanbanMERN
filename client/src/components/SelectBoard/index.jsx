@@ -60,7 +60,6 @@ const SelectBoard = () => {
     Axios.post("http://localhost:3001/api/boards/delete", {
       id: id,
     }).then((response, err) => {
-      console.log("🚀 ~ file: index.jsx ~ line 63 ~ handleDelete ~ response", response)
       if (response.status !== 200) {
         alert("Erreur de suppréssion");
       }

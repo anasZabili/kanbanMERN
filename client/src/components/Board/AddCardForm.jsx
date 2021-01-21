@@ -60,10 +60,6 @@ const AddCardForm = ({ columnId, setColumns, column, cardChange, setCardChange }
       content: newCard,
       position: maxPosition === 0 ? 0 : maxPosition + 1,
     }).then((response, err) => {
-      console.log(
-        "🚀 ~ file: AddBoardForm.jsx ~ line 36 ~ handleOnClick ~ response",
-        response
-      );
       if (err) {
         console.log(err);
         return;

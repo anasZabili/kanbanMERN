@@ -39,13 +39,11 @@ const AddColumnForm = ({ setColumns, columns }) => {
       maxPosition =
       columns[index].position > maxPosition ? columns[index].position : maxPosition;
     }
-    console.log("🚀 ~ file: AddColumnForm.jsx ~ line 40 ~ handleOnClick ~ maxPosition", maxPosition)
     Axios.post("http://localhost:3001/api/taskColumn/insert", {
       boardId: boardId,
       name: newColumn,
       position: maxPosition === 0 ? 0 : maxPosition + 1,
     }).then((response, err) => {
-      console.log("🚀 ~ file: AddColumnForm.jsx ~ line 48 ~ handleOnClick ~ response", response)
       setColumns((prevState) => {
         return [
           ...prevState,
