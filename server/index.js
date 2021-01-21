@@ -6,15 +6,8 @@ const cors = require("cors");
 const port = 3001;
 const mysql = require("mysql");
 const bodyParser = require("body-parser");
-const bcrypt = require('bcrypt');
+const bcrypt = require("bcrypt");
 const saltRounds = 10;
-
-// const db = mysql.createPool({
-//   host: "localhost",
-//   user: "root",
-//   password: "admin",
-//   database: "kanban",
-// });
 
 const db = mysql.createPool({
   host: "localhost",
@@ -39,8 +32,6 @@ app.use(cors());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(express.json());
 
-
-
 app.get("/login", (req, res) => {
   if (req.session.user) {
     res.send({ loggedIn: true, user: req.session.user });
@@ -56,33 +47,32 @@ app.post("/api/user/insert", (req, res) => {
     if (err) {
       console.log("err in bcrypt", err);
     }
-    const sqlInsert = "INSERT INTO USER (name, mail, password) VALUES (?, ?, ?);";
+    const sqlInsert =
+      "INSERT INTO USER (name, mail, password) VALUES (?, ?, ?);";
     db.query(sqlInsert, [username, mail, hash], (err, result) => {
       console.log(err);
       // res.send(result.status);
       // console.log("🚀 ~ file: index.js ~ line 43 ~ db.query ~ result", result);
     });
-  
-  }
-)});
+  });
+});
 
 app.post("/api/user/get", (req, res) => {
   const mail = req.body.mail;
   const password = req.body.password;
-  const sqlSelect =
-    "SELECT ID, NAME, PASSWORD FROM USER WHERE MAIL LIKE ? ;";
+  const sqlSelect = "SELECT ID, NAME, PASSWORD FROM USER WHERE MAIL LIKE ? ;";
   db.query(sqlSelect, mail, (err, result) => {
     if (err) {
-      res.send({err: err});
+      res.send({ err: err });
     }
-    if (result.length > 0) {      
+    if (result.length > 0) {
       bcrypt.compare(password, result[0].PASSWORD, (error, response) => {
         if (response) {
           res.send(result);
         } else {
           res.send({ message: "Identifiant ou mot de passe incorrect" });
         }
-      } )
+      });
     } else {
       res.send({ message: "Identifiant incorrect" });
     }
@@ -147,7 +137,7 @@ app.post("/api/card/get", (req, res) => {
   const taskColumnId = req.body.taskColumnId;
 
   const sqlSelect =
-    "SELECT DISTINCT c.id, u.name, c.content, c.position, c.personInChargeId FROM CARD AS c, USER as u WHERE c.personInChargeId = u.id AND taskColumnId = ?;";
+    "SELECT DISTINCT c.id, u.name, c.content, c.position, c.personInChargeId, u.name FROM CARD AS c, USER as u WHERE c.personInChargeId = u.id AND taskColumnId = ?;";
   db.query(sqlSelect, [taskColumnId], (err, result) => {
     if (err) {
       return res.send(err);
@@ -165,24 +155,25 @@ app.post("/api/card/insert", (req, res) => {
   const content = req.body.content;
   const position = req.body.position;
   const sqlSelect =
-  "INSERT INTO CARD (TASKCOLUMNID, PERSONINCHARGEID, CONTENT, POSITION) VALUES (?, ?, ?, ?);"
-  db.query(sqlSelect, [taskColumnId, personInChargeId, content, position], (err, result) => {
-    if (err) {
-      return res.send(err);
-    } else if (!result) {
-      return null;
-    } else {
-      console.log("🚀 ~ file: index.js ~ line 181 ~ db.query ~ result", result)
-      return res.send(result);
+    "INSERT INTO CARD (TASKCOLUMNID, PERSONINCHARGEID, CONTENT, POSITION) VALUES (?, ?, ?, ?);";
+  db.query(
+    sqlSelect,
+    [taskColumnId, personInChargeId, content, position],
+    (err, result) => {
+      if (err) {
+        return res.send(err);
+      } else if (!result) {
+        return null;
+      } else {
+        return res.send(result);
+      }
     }
-  });
+  );
 });
-
 
 app.post("/api/card/delete", (req, res) => {
   const cardId = req.body.cardId;
-  const sqlSelect =
-  "DELETE FROM CARD WHERE ID = ?;"
+  const sqlSelect = "DELETE FROM CARD WHERE ID = ?;";
   db.query(sqlSelect, [cardId], (err, result) => {
     if (err) {
       return res.send(err);
@@ -197,9 +188,9 @@ app.post("/api/card/delete", (req, res) => {
 app.post("/api/card/update", (req, res) => {
   const cardId = req.body.cardId;
   const taskColumnId = req.body.taskColumnId;
-  const position = req.body.position
+  const position = req.body.position;
   const sqlSelect =
-  "UPDATE CARD SET taskColumnId = ?, position = ?  WHERE id = ?;";
+    "UPDATE CARD SET taskColumnId = ?, position = ?  WHERE id = ?;";
   db.query(sqlSelect, [taskColumnId, position, cardId], (err, result) => {
     if (err) {
       return res.send(err);
@@ -210,8 +201,6 @@ app.post("/api/card/update", (req, res) => {
     }
   });
 });
-
-
 
 app.post("/api/boards/insert", (req, res) => {
   const name = req.body.name;
@@ -229,6 +218,19 @@ app.post("/api/boards/delete", (req, res) => {
   const sqlDelete = "DELETE FROM BOARDS WHERE id = ?;";
   db.query(sqlDelete, [id], (err, result) => {
     res.send();
+  });
+});
+
+app.post("/api/invited/insert", (req, res) => {
+  const boardId = req.body.boardId;
+  const mail = req.body.mail;
+
+  const sqlSelect = "SELECT ID FROM USER WHERE MAIL LIKE ? ;";
+  db.query(sqlSelect, [mail], (err, result) => {
+    const sqlInsert = "INSERT INTO INVITED (ID, BOARDID) VALUES (?, ?)";
+    db.query(sqlInsert, [result[0].ID, boardId], (err, result) => {
+      res.send();
+    });
   });
 });
 

@@ -1,8 +1,15 @@
 import { Draggable } from "react-beautiful-dnd";
-import { Grid, Paper, Typography, IconButton, Box } from "@material-ui/core";
+import {
+  Grid,
+  Paper,
+  Typography,
+  IconButton,
+  Box,
+  Avatar,
+} from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
 import { Delete } from "@material-ui/icons";
-import Axios from 'axios'
+import Axios from "axios";
 
 const useStyles = makeStyles({
   typo: {
@@ -12,9 +19,17 @@ const useStyles = makeStyles({
     display: "inlineBlock",
     whiteSpace: "nowrap",
   },
+  avatar: {
+    width: "30px",
+    height: "30px",
+    float:'right',
+    clear:'right',
+    marginRight: 5,
+  },
 });
 
 const TaskCard = ({ item, index, setCardChange }) => {
+console.log("🚀 ~ file: TaskCard.jsx ~ line 32 ~ TaskCard ~ item", item)
   const classes = useStyles();
   const handleOnDelete = (cardId) => {
     Axios.post("http://localhost:3001/api/card/delete", {
@@ -23,9 +38,9 @@ const TaskCard = ({ item, index, setCardChange }) => {
       if (response.status !== 200) {
         alert("Erreur de suppréssion");
       }
-    })
-    setCardChange((prevState) => prevState + 1)
-  }
+    });
+    setCardChange((prevState) => prevState + 1);
+  };
   return (
     <Draggable
       key={item.id}
@@ -49,9 +64,15 @@ const TaskCard = ({ item, index, setCardChange }) => {
                   </Typography>
                 </Grid>
                 <Grid item xs={3}>
-                  <IconButton size="small" onClick={() => handleOnDelete(item.id)}>
+                  <IconButton
+                    size="small"
+                    onClick={() => handleOnDelete(item.id)}
+                  >
                     <Delete />
                   </IconButton>
+                </Grid>
+                <Grid item xs={12}>
+                  <Avatar className={classes.avatar}>{item.name.charAt(0).toUpperCase() + item.name.charAt(1)}</Avatar>
                 </Grid>
               </Grid>
             </Paper>

@@ -38,10 +38,21 @@ const Home = () => {
   // );  // repenser la disposition des colum faire un tableau d'id de column et agire en consequence ...
   // const tabsFromBackend = { id: uuid(), columns: columnsFromBackend };
   const [columns, setColumns] = useState([]);
-  console.log("🚀 ~ file: index.jsx ~ line 41 ~ Home ~ columns", columns)
+  console.log("🚀 ~ file: index.jsx ~ line 41 ~ Home ~ columns", columns);
   const [reveal, setReveal] = useState(false);
   const [cardChange, setCardChange] = useState(0);
   const { boardId } = useParams();
+
+  const handleInvited = (mail) => {
+    console.log("🚀 ~ file: index.jsx ~ line 47 ~ handleInvited ~ mail", mail)
+    Axios.post("http://localhost:3001/api/invited/insert", {
+      mail: mail,
+      boardId: boardId
+    }).then((response, err) => {
+      console.log("response l 51", response)
+    });
+  };
+  
   useEffect(() => {
     Axios.post("http://localhost:3001/api/taskColumn/get", {
       boardId: boardId,
@@ -92,7 +103,7 @@ const Home = () => {
 
   return (
     <>
-      <Header />
+      <Header handleInvited={handleInvited} />
       {reveal ? (
         <Body
           cardChange={cardChange}

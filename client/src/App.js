@@ -24,11 +24,7 @@ function App() {
   }, [])
   return (
     <AuthContext.Provider value={{ auth, setAuth }}>
-      <BrowserRouter>
-        {/* penser a bien lui passer le user conecter quand cette partie sera faite */}
-        {/* <SelectBoard/> */}
-        {/* <Header />
-      <Body /> */}
+      <BrowserRouter basename={"/FrontZabili"}>
         <Switch>
           <ProtectedLogin auth={auth} path="/" exact component={Login} />
           <ProtectedRoutes auth={auth} path="/Home/:boardId" component={Board} />

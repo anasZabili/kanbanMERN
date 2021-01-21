@@ -1,12 +1,10 @@
 import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import Button from "@material-ui/core/Button";
+import { AppBar, Toolbar, Typography, Button, Box } from "@material-ui/core";
 import { AuthContext } from "../../App";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import Cookies from "js-cookie";
 import { useHistory } from "react-router-dom";
+import InviteDialog from "./InviteDialog";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -24,7 +22,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const Header = () => {
+const Header = ({ handleInvited }) => {
   const history = useHistory();
   const classes = useStyles();
   const auth = useContext(AuthContext);
@@ -35,14 +33,25 @@ const Header = () => {
   };
   const handleBoard = () => {
     history.push("/SelectBoard");
-  }; 
+  };
+  const [open, setOpen] = useState(false);
+  const handleClickOpen = () => {
+    setOpen(true);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+  };
   return (
-    <div className={classes.root}>
+    <Box className={classes.root}>
       <AppBar position="static">
         <Toolbar>
           <Typography variant="h6" className={classes.title}>
             Trello
           </Typography>
+          <Button color="inherit" onClick={handleClickOpen}>
+            Inviter un Membre
+          </Button>
           <Button color="inherit" onClick={handleBoard}>
             Tableau
           </Button>
@@ -51,7 +60,12 @@ const Header = () => {
           </Button>
         </Toolbar>
       </AppBar>
-    </div>
+      <InviteDialog
+        open={open}
+        handleClose={handleClose}
+        handleClick={handleInvited}
+      />
+    </Box>
   );
 };
 
