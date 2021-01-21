@@ -70,7 +70,7 @@ app.post("/api/user/get", (req, res) => {
   const mail = req.body.mail;
   const password = req.body.password;
   console.log("🚀 ~ file: index.js ~ line 63 ~ app.post ~ password", password)
-  sqlSelect =
+  const sqlSelect =
     "SELECT ID, NAME, PASSWORD FROM USER WHERE MAIL LIKE ? ;";
   db.query(sqlSelect, mail, (err, result) => {
     if (err) {
@@ -92,7 +92,7 @@ app.post("/api/user/get", (req, res) => {
 
 app.post("/api/boards/get", (req, res) => {
   const ownerId = req.body.ownerId;
-  sqlSelect =
+  const sqlSelect =
     "SELECT DISTINCT * FROM BOARDS WHERE OWNERID = ? OR ID IN (SELECT BOARDID FROM INVITED WHERE ID = ?);";
   db.query(sqlSelect, [ownerId, ownerId], (err, result) => {
     if (err) {
@@ -107,7 +107,7 @@ app.post("/api/boards/get", (req, res) => {
 
 app.post("/api/taskColumn/get", (req, res) => {
   const boardId = req.body.boardId;
-  sqlSelect = "SELECT * FROM TASKCOLUMN WHERE BOARDID = ?;";
+  const sqlSelect = "SELECT * FROM TASKCOLUMN WHERE BOARDID = ?;";
   db.query(sqlSelect, [boardId], (err, result) => {
     if (err) {
       return res.send(err);
@@ -123,7 +123,7 @@ app.post("/api/taskColumn/insert", (req, res) => {
   const boardId = req.body.boardId;
   const name = req.body.name;
   const position = req.body.position;
-  sqlSelect =
+  const sqlSelect =
     "INSERT INTO taskColumn (BOARDID, NAME, POSITION) VALUES (?, ?, ?);";
   db.query(sqlSelect, [boardId, name, position], (err, result) => {
     res.send();
@@ -147,7 +147,7 @@ app.post("/api/taskColumn/insert", (req, res) => {
 app.post("/api/card/get", (req, res) => {
   const taskColumnId = req.body.taskColumnId;
 
-  sqlSelect =
+  const sqlSelect =
     "SELECT DISTINCT c.id, u.name, c.content, c.position, c.personInChargeId FROM CARD AS c, USER as u WHERE c.personInChargeId = u.id AND taskColumnId = ?;";
   db.query(sqlSelect, [taskColumnId], (err, result) => {
     if (err) {
@@ -165,13 +165,31 @@ app.post("/api/card/insert", (req, res) => {
   const personInChargeId = req.body.personInChargeId;
   const content = req.body.content;
   const position = req.body.position;
-  sqlSelect =
+  const sqlSelect =
   "INSERT INTO CARD (TASKCOLUMNID, PERSONINCHARGEID, CONTENT, POSITION) VALUES (?, ?, ?, ?);"
   db.query(sqlSelect, [taskColumnId, personInChargeId, content, position], (err, result) => {
     console.log("🚀 ~ file: index.js ~ line 171 ~ db.query ~ position", position)
     console.log("🚀 ~ file: index.js ~ line 171 ~ db.query ~ content", content)
     console.log("🚀 ~ file: index.js ~ line 171 ~ db.query ~ personInChargeId", personInChargeId)
     console.log("🚀 ~ file: index.js ~ line 171 ~ db.query ~ taskColumnId", taskColumnId)
+    if (err) {
+      console.log("🚀 ~ file: index.js ~ line 176 ~ db.query ~ err", err)
+      return res.send(err);
+    } else if (!result) {
+      return null;
+    } else {
+      console.log("🚀 ~ file: index.js ~ line 181 ~ db.query ~ result", result)
+      return res.send(result);
+    }
+  });
+});
+
+
+app.post("/api/card/delete", (req, res) => {
+  const cardId = req.body.cardId;
+  const sqlSelect =
+  "DELETE FROM CARD WHERE ID = ?;"
+  db.query(sqlSelect, [cardId], (err, result) => {
     if (err) {
       console.log("🚀 ~ file: index.js ~ line 176 ~ db.query ~ err", err)
       return res.send(err);

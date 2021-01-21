@@ -32,10 +32,10 @@ const Column = ({ columnId, column, index, setColumns, cardChange, setCardChange
                     {...provided.droppableProps}
                     ref={provided.innerRef}
                   >
-                    <Grid container spacing={1}>
+                    <Grid container spacing={2}>
                       {column.items.map((item, index) => {
                         return (
-                          <TaskCard item={item} key={index} index={index} />
+                          <TaskCard item={item} key={index} index={index} setCardChange={setCardChange}/>
                         );
                       })}
                       <AddCardForm

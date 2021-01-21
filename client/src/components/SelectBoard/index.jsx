@@ -31,6 +31,7 @@ const useStyles = makeStyles((theme) => ({
 const SelectBoard = () => {
   const history = useHistory();
   const classes = useStyles();
+  const [board, setChange] = useState(0)
   // const boardDataFromBackEnd = [
   //   {
   //     id: [uuid()],
@@ -52,7 +53,7 @@ const SelectBoard = () => {
       setBoards(response.data);
     })
 
-  }, [ownerId, boards])
+  }, [ownerId, board])
 
   // const [boards, setBoards] = useState(boardDataFromBackEnd);
   const handleDelete = (id) => {
@@ -102,7 +103,7 @@ const SelectBoard = () => {
             );
           })}
           <Grid item xs={4}>
-            <AddBoardForm boards={boards} setBoards={setBoards} />
+            <AddBoardForm boards={boards} setBoards={setBoards} setChange={setChange}/>
             {/* <Typography>Créer un tableau</Typography> */}
           </Grid>
         </Grid>

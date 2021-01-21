@@ -41,7 +41,7 @@ const Home = () => {
   console.log("🚀 ~ file: index.jsx ~ line 41 ~ Home ~ columns", columns);
   const [reveal, setReveal] = useState(false);
   const [cardChange, setCardChange] = useState(0);
-  console.log("🚀 ~ file: index.jsx ~ line 44 ~ Home ~ cardChange", cardChange)
+  console.log("🚀 ~ file: index.jsx ~ line 44 ~ Home ~ cardChange", cardChange);
   const { boardId } = useParams();
   useEffect(() => {
     Axios.post("http://localhost:3001/api/taskColumn/get", {
@@ -68,9 +68,19 @@ const Home = () => {
             })
           );
         }
-        Promise.all(promises).then((result) => {
-          setReveal(true);
-        });
+        Promise.all(promises)
+          .then((result) => {
+            setReveal(true);
+          })
+          .then(
+            setColumns((prevState) => {
+              for (let i = 0; i < prevState?.length; i++) {
+                prevState.items?.sort((a, b) => a.positon - b.postion);
+              }
+              prevState?.sort((a, b) => a.positon - b.postion);
+              return [...prevState];
+            })
+          );
       });
   }, [boardId, cardChange]);
 

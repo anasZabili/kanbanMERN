@@ -11,7 +11,7 @@ import { v4 as uuid } from "uuid";
 import Axios from 'axios'
 import Cookies from 'js-cookie'
 
-const AddBoardForm = ({ setBoards, boards }) => {
+const AddBoardForm = ({ setBoards, boards, setChange }) => {
   const [newBoard, setNewBoard] = useState("");
   const [revealForm, setRevealForm] = useState(false);
 
@@ -46,6 +46,7 @@ const AddBoardForm = ({ setBoards, boards }) => {
             },
           ];
         });
+        setChange((prevState) => prevState + 1)
       }
     });
 
