@@ -12,7 +12,6 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 const Column = ({ columnId, column, index, setColumns, cardChange, setCardChange }) => {
-console.log("🚀 ~ file: Column.jsx ~ line 15 ~ Column ~ column", column)
   const classes = useStyles();
   return (
     <Draggable index={index} draggableId={columnId.toString() + "column"}>
@@ -36,11 +35,11 @@ console.log("🚀 ~ file: Column.jsx ~ line 15 ~ Column ~ column", column)
                     <Grid container spacing={2}>
                       {column.items.map((item, index) => {
                         return (
-                          <TaskCard item={item} key={index} index={index} setCardChange={setCardChange}/>
+                          <TaskCard item={item} key={index} index={index} setCardChange={setCardChange} />
                         );
                       })}
                       <AddCardForm
-                        cardChange={cardChange} 
+                        cardChange={cardChange}
                         setCardChange={setCardChange}
                         column={column}
                         columnId={columnId}

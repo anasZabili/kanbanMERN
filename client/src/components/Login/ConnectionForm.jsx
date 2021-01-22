@@ -1,27 +1,16 @@
 import { useState } from "react";
-import { makeStyles } from "@material-ui/styles";
 import {
   Grid,
-  Card,
-  Box,
   TextField,
   Container,
   Typography,
   Button,
 } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
-  appContainer: {
-    alignItems: "center",
-  },
-}));
 
-// TODO verifier que toute les information son rentré
-// TODO verifier que les deux mots de passe son les même
 const LoginForm = ({ handleOnClick }) => {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
-  // TODO verifier le format
   const handleMail = (e) => {
     setMail(e.target.value);
   };

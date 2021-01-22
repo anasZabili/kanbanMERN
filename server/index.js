@@ -9,9 +9,9 @@ const saltRounds = 10;
 
 const db = mysql.createPool({
   host: "localhost",
-  user: "root",
-  password: "password",
-  database: "kanban",
+  user: "projet",
+  password: "tejorp",
+  database: "projet",
 });
 
 app.get("/", (req, res) => {
@@ -42,8 +42,6 @@ app.post("/api/user/insert", (req, res) => {
       "insert into user (name, mail, password) values (?, ?, ?);";
     db.query(sqlInsert, [username, mail, hash], (err, result) => {
       console.log(err);
-      // res.send(result.status);
-      // console.log("🚀 ~ file: index.js ~ line 43 ~ db.query ~ result", result);
     });
   });
 });
@@ -57,7 +55,7 @@ app.post("/api/user/get", (req, res) => {
       res.send({ err: err });
     }
     if (result.length > 0) {
-      bcrypt.compare(password, result[0].PASSWORD, (error, response) => {
+      bcrypt.compare(password, result[0].password, (error, response) => {
         if (response) {
           res.send(result);
         } else {
@@ -205,7 +203,7 @@ app.post("/api/invited/insert", (req, res) => {
   const sqlSelect = "select id from user where mail like ? ;";
   db.query(sqlSelect, [mail], (err, result) => {
     const sqlInsert = "insert into invited (id, boardid) values (?, ?)";
-    db.query(sqlInsert, [result[0].ID, boardId], (err, result) => {
+    db.query(sqlInsert, [result[0].id, boardId], (err, result) => {
       res.send();
     });
   });

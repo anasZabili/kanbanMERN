@@ -1,6 +1,5 @@
 import { useState } from "react";
 import {
-  Box,
   Typography,
   TextField,
   Button,
@@ -59,31 +58,29 @@ const AddBoardForm = ({ setBoards, boards, setChange }) => {
           <Typography>+ Créer un tableau</Typography>
         </Button>
       ) : (
-        <>
-          <TextField
-            // className={classes.textfield}
-            id="add_board"
-            label="Ajouter un titre au tableau"
-            multiline
-            rowsMax={4}
-            value={newBoard}
-            onChange={handleOnChange}
-            variant="outlined"
-          />
-          <Button
-            // size='small'
-            variant="contained"
-            color="primary"
-            onClick={handleOnClick}
-            // className={classes.button}
-          >
-            Créer un tableau
+          <>
+            <TextField
+              // className={classes.textfield}
+              id="add_board"
+              label="Ajouter un titre au tableau"
+              multiline
+              rowsMax={4}
+              value={newBoard}
+              onChange={handleOnChange}
+              variant="outlined"
+            />
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleOnClick}
+            >
+              Créer un tableau
           </Button>
-          <IconButton onClick={handleDelete}>
-            <Delete />
-          </IconButton>
-        </>
-      )}
+            <IconButton onClick={handleDelete}>
+              <Delete />
+            </IconButton>
+          </>
+        )}
     </>
   );
 };

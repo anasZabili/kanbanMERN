@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.js": "/FrontZabili/static/js/main.cc6887d8.chunk.js",
+    "main.js.map": "/FrontZabili/static/js/main.cc6887d8.chunk.js.map",
+    "runtime-main.js": "/FrontZabili/static/js/runtime-main.5e20c2a5.js",
+    "runtime-main.js.map": "/FrontZabili/static/js/runtime-main.5e20c2a5.js.map",
+    "static/js/2.a080af86.chunk.js": "/FrontZabili/static/js/2.a080af86.chunk.js",
+    "static/js/2.a080af86.chunk.js.map": "/FrontZabili/static/js/2.a080af86.chunk.js.map",
+    "index.html": "/FrontZabili/index.html",
+    "static/js/2.a080af86.chunk.js.LICENSE.txt": "/FrontZabili/static/js/2.a080af86.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.5e20c2a5.js",
+    "static/js/2.a080af86.chunk.js",
+    "static/js/main.cc6887d8.chunk.js"
+  ]
+}

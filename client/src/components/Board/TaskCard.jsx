@@ -4,7 +4,6 @@ import {
   Paper,
   Typography,
   IconButton,
-  Box,
   Avatar,
 } from "@material-ui/core";
 import { makeStyles } from "@material-ui/styles";
@@ -22,14 +21,13 @@ const useStyles = makeStyles({
   avatar: {
     width: "30px",
     height: "30px",
-    float:'right',
-    clear:'right',
+    float: 'right',
+    clear: 'right',
     marginRight: 5,
   },
 });
 
 const TaskCard = ({ item, index, setCardChange }) => {
-console.log("🚀 ~ file: TaskCard.jsx ~ line 32 ~ TaskCard ~ item", item)
   const classes = useStyles();
   const handleOnDelete = (cardId) => {
     Axios.post("http://192.168.76.76:3001/api/card/delete", {

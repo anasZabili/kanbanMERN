@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { makeStyles } from "@material-ui/styles";
 import {
   Grid,
   TextField,
@@ -8,20 +7,12 @@ import {
   Button,
 } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
-  appContainer: {
-    alignItems: "center",
-  },
-}));
 
-// TODO verifier que toute les information son rentré
-// TODO verifier que les deux mots de passe son les même
 const CreateAccountForm = ({ handleOnClick }) => {
   const [mail, setMail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmedPassword, setConfirmedPassword] = useState("");
   const [name, setName] = useState("");
-  // TODO verifier le format
   const handleMail = (e) => {
     setMail(e.target.value);
   };
@@ -79,7 +70,7 @@ const CreateAccountForm = ({ handleOnClick }) => {
             type="password"
             required
             fullWidth
-            error={password !== confirmedPassword} 
+            error={password !== confirmedPassword}
             value={confirmedPassword}
             onChange={handleConfirmedPassword}
             variant="outlined"

@@ -20,11 +20,10 @@ const useStyles = makeStyles((theme) => ({
   button: {
     marginLeft: 4,
     padding: 5,
-    // height: 40
   },
 }));
 
-const AddColumnForm = ({ setColumns, columns }) => {
+const AddColumnForm = ({ setColumns, columns, setCardChange }) => {
   const classes = useStyles();
   const [revealForm, setRevealForm] = useState(false);
   const [newColumn, setNewColumn] = useState("");
@@ -37,7 +36,7 @@ const AddColumnForm = ({ setColumns, columns }) => {
     let maxPosition = 0;
     for (let index = 0; index < columns.length; index++) {
       maxPosition =
-      columns[index].position > maxPosition ? columns[index].position : maxPosition;
+        columns[index].position > maxPosition ? columns[index].position : maxPosition;
     }
     Axios.post("http://192.168.76.76:3001/api/taskColumn/insert", {
       boardId: boardId,
@@ -52,11 +51,12 @@ const AddColumnForm = ({ setColumns, columns }) => {
             name: newColumn,
             items: [],
             boardId: boardId,
-            position: maxPosition === 0 ? 0 : maxPosition + 1 
+            position: maxPosition === 0 ? 0 : maxPosition + 1
           },
         ];
       });
       setNewColumn("");
+      setCardChange((prevState) => prevState + 1)
       setRevealForm(false);
     });
   };
@@ -74,31 +74,30 @@ const AddColumnForm = ({ setColumns, columns }) => {
           <Typography>+ Ajouter une autre listes</Typography>
         </Box>
       ) : (
-        <>
-          <TextField
-            className={classes.textfield}
-            id="add_column"
-            label="Saisisser le titre de la liste"
-            multiline
-            rowsMax={4}
-            value={newColumn}
-            onChange={handleChange}
-            variant="outlined"
-          />
-          <Button
-            // size='small'
-            onClick={handleOnClick}
-            variant="contained"
-            color="primary"
-            className={classes.button}
-          >
-            Ajouter autre liste
+          <>
+            <TextField
+              className={classes.textfield}
+              id="add_column"
+              label="Saisisser le titre de la liste"
+              multiline
+              rowsMax={4}
+              value={newColumn}
+              onChange={handleChange}
+              variant="outlined"
+            />
+            <Button
+              onClick={handleOnClick}
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              Ajouter autre liste
           </Button>
-          <IconButton onClick={handleDelete}>
-            <Delete />
-          </IconButton>
-        </>
-      )}
+            <IconButton onClick={handleDelete}>
+              <Delete />
+            </IconButton>
+          </>
+        )}
     </>
   );
 };

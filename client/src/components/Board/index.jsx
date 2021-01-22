@@ -1,58 +1,24 @@
 import Body from "./Body";
 import Header from "./Header";
 import { useEffect, useState } from "react";
-import { v4 as uuid } from "uuid";
 import { useParams } from "react-router-dom";
 import Axios from "axios";
 import { CircularProgress } from "@material-ui/core";
 
 const Home = () => {
-  // const itemsFromBackend = [
-  //   { id: uuid(), content: "First task", index: 4 },
-  //   { id: uuid(), content: "Second task", index: 3 },
-  //   { id: uuid(), content: "Third task", index: 2 },
-  //   { id: uuid(), content: "Fourth task", index: 1 },
-  //   { id: uuid(), content: "Fifth task", index: 0 },
-  // ];
-
-  // const columnsFromBackend = {
-  //   [uuid()]: {
-  //     name: "Requested",
-  //     items: itemsFromBackend,
-  //   },
-  //   [uuid()]: {
-  //     name: "To do",
-  //     items: [],
-  //   },
-  //   [uuid()]: {
-  //     name: "In Progress",
-  //     items: [],
-  //   },
-  //   [uuid()]: {
-  //     name: "Done",
-  //     items: [],
-  //   },
-  // };
-  // Object.entries(columnsFromBackend).map(([columnId, column], index) =>
-  //   column.items?.sort((a, b) => a.index - b.index)
-  // );  // repenser la disposition des colum faire un tableau d'id de column et agire en consequence ...
-  // const tabsFromBackend = { id: uuid(), columns: columnsFromBackend };
   const [columns, setColumns] = useState([]);
-  console.log("🚀 ~ file: index.jsx ~ line 41 ~ Home ~ columns", columns);
   const [reveal, setReveal] = useState(false);
   const [cardChange, setCardChange] = useState(0);
   const { boardId } = useParams();
 
   const handleInvited = (mail) => {
-    console.log("🚀 ~ file: index.jsx ~ line 47 ~ handleInvited ~ mail", mail)
     Axios.post("http://192.168.76.76:3001/api/invited/insert", {
       mail: mail,
       boardId: boardId
     }).then((response, err) => {
-      console.log("response l 51", response)
     });
   };
-  
+
   useEffect(() => {
     Axios.post("http://192.168.76.76:3001/api/taskColumn/get", {
       boardId: boardId,
@@ -94,13 +60,6 @@ const Home = () => {
       });
   }, [boardId, cardChange]);
 
-  // const handleCardDragEnd = () => {};
-  // useEffect(() => {
-  //   Object.entries(columns).map(([columnId, column], index) =>
-  //     column.items?.sort((a, b) => a.index - b.index)
-  //   );
-  // });
-
   return (
     <>
       <Header handleInvited={handleInvited} />
@@ -112,8 +71,8 @@ const Home = () => {
           setColumns={setColumns}
         />
       ) : (
-        <CircularProgress />
-      )}
+          <CircularProgress />
+        )}
     </>
   );
 };

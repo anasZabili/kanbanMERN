@@ -28,7 +28,6 @@ const Header = () => {
   const auth = useContext(AuthContext);
   const handleLogout = () => {
     auth.setAuth(false);
-    // TODO replace by userID
     Cookies.remove("user");
   };
   return (
