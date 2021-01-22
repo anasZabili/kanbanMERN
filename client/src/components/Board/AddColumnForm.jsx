@@ -24,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AddColumnForm = ({ setColumns, columns }) => {
+const AddColumnForm = ({ setColumns, columns, setCardChange }) => {
   const classes = useStyles();
   const [revealForm, setRevealForm] = useState(false);
   const [newColumn, setNewColumn] = useState("");
@@ -57,6 +57,7 @@ const AddColumnForm = ({ setColumns, columns }) => {
         ];
       });
       setNewColumn("");
+      setCardChange((prevState) => prevState + 1)
       setRevealForm(false);
     });
   };

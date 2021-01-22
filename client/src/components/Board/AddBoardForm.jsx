@@ -40,8 +40,8 @@ const AddBoardForm = ({ setBoards, boards, setChange }) => {
           return [
             ...prevState,
             {
-              id: [uuid()],
-              name: newBoard,
+              ID: [uuid()],
+              NAME: newBoard,
             },
           ];
         });

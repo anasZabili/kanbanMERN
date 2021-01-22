@@ -101,7 +101,7 @@ const onDragEnd = (result, columns, setColumns) => {
       }).then((response, err) => {
         console.log("update fait", response);
       })
-      // Axios.post("http://localhost:3001/api/card/insert", {
+      // Axios.post("http://192.168.76.76:3001/api/card/insert", {
       //   taskColumnId: destColumn.id,
       //   personInChargeId: removed.personInChargeId,
       //   content: removed.content,
@@ -209,7 +209,7 @@ function Body({ columns, setColumns, cardChange, setCardChange }) {
             })}
             {provided.placeholder}
             <Box className={classes.box2} component="div">
-              <AddColumnForm columns={columns} setColumns={setColumns} />
+              <AddColumnForm columns={columns} setColumns={setColumns} setCardChange={setCardChange}/>
             </Box>
           </Box>
         )}

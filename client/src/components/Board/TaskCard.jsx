@@ -43,8 +43,8 @@ const TaskCard = ({ item, index, setCardChange }) => {
   };
   return (
     <Draggable
-      key={item.id}
-      draggableId={item?.id?.toString() + "card"}
+      key={item.ID}
+      draggableId={item?.ID?.toString() + "card"}
       index={index}
     >
       {(provided, snapshot) => {
@@ -60,19 +60,19 @@ const TaskCard = ({ item, index, setCardChange }) => {
               <Grid container spacing={1}>
                 <Grid item xs={9}>
                   <Typography className={classes.typo} variant="body2">
-                    {item.content}
+                    {item.CONTENT}
                   </Typography>
                 </Grid>
                 <Grid item xs={3}>
                   <IconButton
                     size="small"
-                    onClick={() => handleOnDelete(item.id)}
+                    onClick={() => handleOnDelete(item.ID)}
                   >
                     <Delete />
                   </IconButton>
                 </Grid>
                 <Grid item xs={12}>
-                  <Avatar className={classes.avatar}>{item.name.charAt(0).toUpperCase() + item.name.charAt(1)}</Avatar>
+                  <Avatar className={classes.avatar}>{item?.NAME?.charAt(0).toUpperCase() + item?.NAME?.charAt(1)}</Avatar>
                 </Grid>
               </Grid>
             </Paper>
