@@ -208,7 +208,7 @@ app.post("/api/boards/insert", (req, res) => {
 
   const sqlInsert = "INSERT INTO BOARDS (name, ownerId) VALUES (?, ?);";
   db.query(sqlInsert, [name, ownerId], (err, result) => {
-    res.send(result.status);
+    res.send(result?.status);
   });
 });
 

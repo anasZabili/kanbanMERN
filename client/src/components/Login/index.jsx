@@ -5,6 +5,7 @@ import { AuthContext } from "../../App";
 import Cookies from "js-cookie";
 import Axios from "axios";
 import useInsertUser from "../../services/useInsertUser";
+import { useHistory } from "react-router-dom";
 
 
 const Login = () => {
@@ -12,6 +13,7 @@ const Login = () => {
   const [loginStatus, setLoginStatus] = useState("");
   const auth = useContext(AuthContext);
   let twoHourExpiration = new Date(new Date().getTime() + 120 * 60 * 1000);
+  const history = useHistory();
 
   const handleOnClickConnection = async (login, password) => {
     Axios.post("http://localhost:3001/api/user/get", {
@@ -72,6 +74,7 @@ const Login = () => {
       mail: login,
       password: password1,
     }).then((result, err) => {
+      alert("coucou");
       if (err) {
         alert("erreur de créattion");
       }
@@ -85,11 +88,11 @@ const Login = () => {
     // }).then((result) => {
 
     // a changer par la conditions d'erreur
-
-    Cookies.set("user", "loginTrue", {
-      expires: twoHourExpiration,
-    });
-    auth.setAuth(true);
+    setIsConnection(true);
+    // Cookies.set("user", "loginTrue", {
+    //   expires: twoHourExpiration,
+    // });
+    // auth.setAuth(true);
 
     //   alert("successfully insert");
     // });
