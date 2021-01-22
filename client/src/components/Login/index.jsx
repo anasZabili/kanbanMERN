@@ -6,7 +6,6 @@ import Cookies from "js-cookie";
 import Axios from "axios";
 import useInsertUser from "../../services/useInsertUser";
 
-
 const Login = () => {
   const [isConnection, setIsConnection] = useState(true);
   const [loginStatus, setLoginStatus] = useState("");
@@ -17,27 +16,41 @@ const Login = () => {
     Axios.post("http://localhost:3001/api/user/get", {
       mail: login,
       password: password,
-    }).then((response, err) => {
-      if (err) {
-        console.log(err);
-        return;
-      }
-      // alert("Nom de compte ou mot de passe incorrect")
-      if (response.data.message) {
-        alert(response.data.message);
-      } else {
-        Cookies.set(
-          "user",
-          response?.data[0]?.ID + "_" + response?.data[0]?.NAME,
-          {
-            expires: twoHourExpiration,
-          }
+    }).then(
+      (response, err) => {
+        console.log(
+          "🚀 ~ file: index.jsx ~ line 22 ~ handleOnClickConnection ~ response",
+          response
         );
-        auth.setAuth(true);
-      }
+        console.log(
+          "🚀 ~ file: index.jsx ~ line 23 ~ handleOnClickConnection ~ err",
+          err
+        );
+        if (err) {
+          console.log(err);
+          return;
+        }
+        // alert("Nom de compte ou mot de passe incorrect")
+        if (response.data.message) {
+          alert(response.data.message);
+        } else {
+          Cookies.set(
+            "user",
+            response?.data[0]?.ID + "_" + response?.data[0]?.NAME,
+            {
+              expires: twoHourExpiration,
+            }
+          );
+          auth.setAuth(true);
+        }
 
-      // setColumn(response.data)
-    });
+        // setColumn(response.data)
+      },
+      (err) => {
+        console.log(err);
+        alert("Connexion refusé erreur connection serveur");
+      }
+    );
     // if le login et la mot de passe son dans la base alors je fait ça:
     // mettre le username a la place de user
     /*
@@ -71,11 +84,25 @@ const Login = () => {
       username: name,
       mail: login,
       password: password1,
-    }).then((result, err) => {
-      if (err) {
-        alert("erreur de créattion");
+    }).then(
+      (result, err) => {
+        if (err) {
+          alert("erreur de créattion");
+        }
+        if (result.data.message) {
+          alert(result.data.message);
+        } else {
+          Cookies.set("user", "loginTrue", {
+            expires: twoHourExpiration,
+          });
+          auth.setAuth(true);
+        }
+      },
+      (err) => {
+        console.log(err);
+        alert("Connexion refusé problème connexion serveur");
       }
-    });
+    );
 
     // Axios.post("/api/user/login", {
     //   email: login,
@@ -85,11 +112,6 @@ const Login = () => {
     // }).then((result) => {
 
     // a changer par la conditions d'erreur
-
-    Cookies.set("user", "loginTrue", {
-      expires: twoHourExpiration,
-    });
-    auth.setAuth(true);
 
     //   alert("successfully insert");
     // });

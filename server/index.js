@@ -11,9 +11,9 @@ const saltRounds = 10;
 
 const db = mysql.createPool({
   host: "localhost",
-  user: "root",
-  password: "password",
-  database: "kanban",
+  user: "projet",
+  password: "tejorp",
+  database: "projet",
 });
 
 app.get("/", (req, res) => {
