@@ -16,7 +16,7 @@ const Login = () => {
   const history = useHistory();
 
   const handleOnClickConnection = async (login, password) => {
-    Axios.post("http://localhost:3001/api/user/get", {
+    Axios.post("http://192.168.76.76:3001/api/user/get", {
       mail: login,
       password: password,
     }).then((response, err) => {
@@ -69,7 +69,7 @@ const Login = () => {
     // useInsertUser(username, login, password1);
     // if le login et la mot de passe son dans la base alors je fait ça:
     // mettre le username a la place de user
-    Axios.post("http://localhost:3001/api/user/insert", {
+    Axios.post("http://192.168.76.76:3001/api/user/insert", {
       username: name,
       mail: login,
       password: password1,

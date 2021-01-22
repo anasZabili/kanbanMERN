@@ -54,7 +54,7 @@ const AddCardForm = ({ columnId, setColumns, column, cardChange, setCardChange }
           ? column.items[index].position
           : maxPosition;
     }
-    Axios.post("http://localhost:3001/api/card/insert", {
+    Axios.post("http://192.168.76.76:3001/api/card/insert", {
       taskColumnId: columnId,
       personInChargeId: ownerId,
       content: newCard,

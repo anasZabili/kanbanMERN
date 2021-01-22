@@ -94,14 +94,14 @@ const onDragEnd = (result, columns, setColumns) => {
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
-      Axios.post("http://localhost:3001/api/card/update", {
+      Axios.post("http://192.168.76.76:3001/api/card/update", {
         taskColumnId: destColumn.id,
         cardId: removed.id,
         position: destination.index
       }).then((response, err) => {
         console.log("update fait", response);
       })
-      // Axios.post("http://localhost:3001/api/card/insert", {
+      // Axios.post("http://192.168.76.76:3001/api/card/insert", {
       //   taskColumnId: destColumn.id,
       //   personInChargeId: removed.personInChargeId,
       //   content: removed.content,
@@ -133,7 +133,7 @@ const onDragEnd = (result, columns, setColumns) => {
       const [removed] = copiedItems.splice(source.index, 1);
       
       copiedItems.splice(destination.index, 0, removed);
-      Axios.post("http://localhost:3001/api/card/update", {
+      Axios.post("http://192.168.76.76:3001/api/card/update", {
         taskColumnId: column.id,
         cardId: removed.id,
         position: destination.index

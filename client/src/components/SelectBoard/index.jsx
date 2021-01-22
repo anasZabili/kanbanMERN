@@ -47,7 +47,7 @@ const SelectBoard = () => {
 
   const [boards, setBoards] = useState([]);
   useEffect(() => {
-    Axios.post("http://localhost:3001/api/boards/get", {
+    Axios.post("http://192.168.76.76:3001/api/boards/get", {
       ownerId: ownerId,
     }).then((response, err) => {
       setBoards(response.data);
@@ -57,7 +57,7 @@ const SelectBoard = () => {
 
   // const [boards, setBoards] = useState(boardDataFromBackEnd);
   const handleDelete = (id) => {
-    Axios.post("http://localhost:3001/api/boards/delete", {
+    Axios.post("http://192.168.76.76:3001/api/boards/delete", {
       id: id,
     }).then((response, err) => {
       if (response.status !== 200) {

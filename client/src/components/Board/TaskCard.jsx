@@ -32,7 +32,7 @@ const TaskCard = ({ item, index, setCardChange }) => {
 console.log("🚀 ~ file: TaskCard.jsx ~ line 32 ~ TaskCard ~ item", item)
   const classes = useStyles();
   const handleOnDelete = (cardId) => {
-    Axios.post("http://localhost:3001/api/card/delete", {
+    Axios.post("http://192.168.76.76:3001/api/card/delete", {
       cardId: cardId,
     }).then((response, err) => {
       if (response.status !== 200) {

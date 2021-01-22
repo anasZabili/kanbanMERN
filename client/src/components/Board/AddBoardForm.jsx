@@ -28,7 +28,7 @@ const AddBoardForm = ({ setBoards, boards, setChange }) => {
   const ownerId = userInfo[0];
   const handleOnClick = () => {
     if (!newBoard) return;
-    Axios.post("http://localhost:3001/api/boards/insert", {
+    Axios.post("http://192.168.76.76:3001/api/boards/insert", {
       name: newBoard,
       ownerId: ownerId,
     }).then((response, err) => {
