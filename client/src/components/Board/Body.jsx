@@ -94,7 +94,7 @@ const onDragEnd = (result, columns, setColumns) => {
       const destItems = [...destColumn.items];
       const [removed] = sourceItems.splice(source.index, 1);
       destItems.splice(destination.index, 0, removed);
-      Axios.post("http://localhost:3001/api/card/update", {
+      Axios.post("http://192.168.76.76:3001/api/card/update", {
         taskColumnId: destColumn.id,
         cardId: removed.id,
         position: destination.index
@@ -108,7 +108,7 @@ const onDragEnd = (result, columns, setColumns) => {
       //   // todo bien set la position
       //   position: 20,
       // }).then(
-       
+
       // );
       setColumns((prevState) => {
         prevState[sourceIndex] = {
@@ -131,9 +131,9 @@ const onDragEnd = (result, columns, setColumns) => {
       const column = columns[sourceIndex];
       const copiedItems = [...column.items];
       const [removed] = copiedItems.splice(source.index, 1);
-      
+
       copiedItems.splice(destination.index, 0, removed);
-      Axios.post("http://localhost:3001/api/card/update", {
+      Axios.post("http://192.168.76.76:3001/api/card/update", {
         taskColumnId: column.id,
         cardId: removed.id,
         position: destination.index

@@ -54,7 +54,7 @@ const AddCardForm = ({ columnId, setColumns, column, cardChange, setCardChange }
           ? column.items[index].position
           : maxPosition;
     }
-    Axios.post("http://localhost:3001/api/card/insert", {
+    Axios.post("http://192.168.76.76:3001/api/card/insert", {
       taskColumnId: columnId,
       personInChargeId: ownerId,
       content: newCard,
@@ -111,31 +111,31 @@ const AddCardForm = ({ columnId, setColumns, column, cardChange, setCardChange }
           <Typography>+ Ajouter une carte</Typography>
         </Box>
       ) : (
-        <>
-          <TextField
-            className={classes.textfield}
-            id="add_card"
-            label="Ajouter une autre carte"
-            multiline
-            rowsMax={4}
-            value={newCard}
-            onChange={handleChange}
-            variant="outlined"
-          />
-          <Button
-            onClick={handleOnClick}
-            size="small"
-            variant="contained"
-            color="primary"
-            className={classes.button}
-          >
-            Ajouter une carte
+          <>
+            <TextField
+              className={classes.textfield}
+              id="add_card"
+              label="Ajouter une autre carte"
+              multiline
+              rowsMax={4}
+              value={newCard}
+              onChange={handleChange}
+              variant="outlined"
+            />
+            <Button
+              onClick={handleOnClick}
+              size="small"
+              variant="contained"
+              color="primary"
+              className={classes.button}
+            >
+              Ajouter une carte
           </Button>
-          <IconButton onClick={handleDelete}>
-            <Delete />
-          </IconButton>
-        </>
-      )}
+            <IconButton onClick={handleDelete}>
+              <Delete />
+            </IconButton>
+          </>
+        )}
     </>
   );
 };

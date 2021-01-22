@@ -48,7 +48,7 @@ app.post("/api/user/insert", (req, res) => {
       console.log("err in bcrypt", err);
     }
     const sqlInsert =
-      "INSERT INTO USER (name, mail, password) VALUES (?, ?, ?);";
+      "INSERT INTO USER (NAME, MAIL, PASSWORD) VALUES (?, ?, ?);";
     db.query(sqlInsert, [username, mail, hash], (err, result) => {
       console.log(err);
       // res.send(result.status);
@@ -113,7 +113,7 @@ app.post("/api/taskColumn/insert", (req, res) => {
   const name = req.body.name;
   const position = req.body.position;
   const sqlSelect =
-    "INSERT INTO taskColumn (BOARDID, NAME, POSITION) VALUES (?, ?, ?);";
+    "INSERT INTO TASKCOLUMN (BOARDID, NAME, POSITION) VALUES (?, ?, ?);";
   db.query(sqlSelect, [boardId, name, position], (err, result) => {
     res.send();
   });
@@ -137,7 +137,7 @@ app.post("/api/card/get", (req, res) => {
   const taskColumnId = req.body.taskColumnId;
 
   const sqlSelect =
-    "SELECT DISTINCT c.id, u.name, c.content, c.position, c.personInChargeId, u.name FROM CARD AS c, USER as u WHERE c.personInChargeId = u.id AND taskColumnId = ?;";
+    "SELECT DISTINCT C.ID, U.NAME, C.CONTENT, C.POSITION, C.PERSONINCHARGEID, U.NAME FROM CARD AS C, USER AS U WHERE C.PERSONINCHARGEID = U.ID AND TASKCOLUMNID = ?;";
   db.query(sqlSelect, [taskColumnId], (err, result) => {
     if (err) {
       return res.send(err);
@@ -190,7 +190,7 @@ app.post("/api/card/update", (req, res) => {
   const taskColumnId = req.body.taskColumnId;
   const position = req.body.position;
   const sqlSelect =
-    "UPDATE CARD SET taskColumnId = ?, position = ?  WHERE id = ?;";
+    "UPDATE CARD SET TASKCOLUMNID = ?, POSITION = ?  WHERE ID = ?;";
   db.query(sqlSelect, [taskColumnId, position, cardId], (err, result) => {
     if (err) {
       return res.send(err);
@@ -206,7 +206,7 @@ app.post("/api/boards/insert", (req, res) => {
   const name = req.body.name;
   const ownerId = req.body.ownerId;
 
-  const sqlInsert = "INSERT INTO BOARDS (name, ownerId) VALUES (?, ?);";
+  const sqlInsert = "INSERT INTO BOARDS (NAME, OWNERID) VALUES (?, ?);";
   db.query(sqlInsert, [name, ownerId], (err, result) => {
     res.send(result.status);
   });
@@ -215,7 +215,7 @@ app.post("/api/boards/insert", (req, res) => {
 app.post("/api/boards/delete", (req, res) => {
   const id = req.body.id;
 
-  const sqlDelete = "DELETE FROM BOARDS WHERE id = ?;";
+  const sqlDelete = "DELETE FROM BOARDS WHERE ID = ?;";
   db.query(sqlDelete, [id], (err, result) => {
     res.send();
   });

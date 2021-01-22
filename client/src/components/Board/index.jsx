@@ -45,16 +45,16 @@ const Home = () => {
 
   const handleInvited = (mail) => {
     console.log("🚀 ~ file: index.jsx ~ line 47 ~ handleInvited ~ mail", mail)
-    Axios.post("http://localhost:3001/api/invited/insert", {
+    Axios.post("http://192.168.76.76:3001/api/invited/insert", {
       mail: mail,
       boardId: boardId
     }).then((response, err) => {
       console.log("response l 51", response)
     });
   };
-  
+
   useEffect(() => {
-    Axios.post("http://localhost:3001/api/taskColumn/get", {
+    Axios.post("http://192.168.76.76:3001/api/taskColumn/get", {
       boardId: boardId,
     })
       .then((response, err) => {
@@ -68,7 +68,7 @@ const Home = () => {
         let promises = [];
         for (let i = 0; i < response.data.length; i++) {
           promises.push(
-            Axios.post("http://localhost:3001/api/card/get", {
+            Axios.post("http://192.168.76.76:3001/api/card/get", {
               taskColumnId: response.data[i].id,
             }).then((response) => {
               setColumns((prevState) => {
@@ -112,8 +112,8 @@ const Home = () => {
           setColumns={setColumns}
         />
       ) : (
-        <CircularProgress />
-      )}
+          <CircularProgress />
+        )}
     </>
   );
 };

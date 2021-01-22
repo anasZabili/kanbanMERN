@@ -28,7 +28,7 @@ const AddBoardForm = ({ setBoards, boards, setChange }) => {
   const ownerId = userInfo[0];
   const handleOnClick = () => {
     if (!newBoard) return;
-    Axios.post("http://localhost:3001/api/boards/insert", {
+    Axios.post("http://192.168.76.76:3001/api/boards/insert", {
       name: newBoard,
       ownerId: ownerId,
     }).then((response, err) => {
@@ -59,31 +59,31 @@ const AddBoardForm = ({ setBoards, boards, setChange }) => {
           <Typography>+ Créer un tableau</Typography>
         </Button>
       ) : (
-        <>
-          <TextField
-            // className={classes.textfield}
-            id="add_board"
-            label="Ajouter un titre au tableau"
-            multiline
-            rowsMax={4}
-            value={newBoard}
-            onChange={handleOnChange}
-            variant="outlined"
-          />
-          <Button
-            // size='small'
-            variant="contained"
-            color="primary"
-            onClick={handleOnClick}
+          <>
+            <TextField
+              // className={classes.textfield}
+              id="add_board"
+              label="Ajouter un titre au tableau"
+              multiline
+              rowsMax={4}
+              value={newBoard}
+              onChange={handleOnChange}
+              variant="outlined"
+            />
+            <Button
+              // size='small'
+              variant="contained"
+              color="primary"
+              onClick={handleOnClick}
             // className={classes.button}
-          >
-            Créer un tableau
+            >
+              Créer un tableau
           </Button>
-          <IconButton onClick={handleDelete}>
-            <Delete />
-          </IconButton>
-        </>
-      )}
+            <IconButton onClick={handleDelete}>
+              <Delete />
+            </IconButton>
+          </>
+        )}
     </>
   );
 };
